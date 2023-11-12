@@ -7,12 +7,41 @@
 
 import SwiftUI
 
+
 struct CardView: View {
+    
+    let card: Card
+    
+    init(_ card: Card) {
+        self.card = card
+    }
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ZStack {
+            let base = RoundedRectangle(cornerRadius: 12.0)
+            base.strokeBorder(lineWidth: 2)
+                .background(base.fill(.white))
+                .overlay(
+                    Text(card.content)
+                        .font(.system(size: 60))
+                )
+                .opacity(card.isFaceUp ? 1 : 0)
+            base.fill(card.isFaceUp ? .green : .orange)
+                .opacity(card.isFaceUp ? 0: 1)
+        }
+        .aspectRatio(3/4, contentMode: .fit)
     }
 }
 
 #Preview {
-    CardView()
+    VStack {
+        HStack {
+            CardView(Card(content: "🐁"))
+            CardView(Card(content: "🐁",isFaceUp: true))
+        }
+        HStack{
+            CardView(Card(content: "🐁",isMatched: true))
+            CardView(Card(content: "🌝",isFaceUp: true))
+        }
+    }.padding()
 }

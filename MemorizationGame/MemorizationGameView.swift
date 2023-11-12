@@ -8,11 +8,28 @@
 import SwiftUI
 
 struct MemorizationGameView: View {
+    @ObservedObject var viewModel: MemorizationGameViewModel
+
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ScrollView{
+            LazyVGrid(
+                columns: [
+                    GridItem(.adaptive(minimum: 90)),
+                ]) {
+                    ForEach(viewModel.cards, id: \.self) { card in
+                        CardView(card)
+                            .onTapGesture {
+                                viewModel.rotateCard(card)
+                            }
+                    }
+                }
+        }
+            .padding(.horizontal)
     }
 }
 
 #Preview {
-    MemorizationGameView()
+    MemorizationGameView(
+        viewModel: MemorizationGameViewModel()
+    )
 }
