@@ -9,22 +9,42 @@ import SwiftUI
 
 struct MemorizationGameView: View {
     @ObservedObject var viewModel: MemorizationGameViewModel
+    @State var showContextMenu = false
 
     var body: some View {
-        ScrollView{
+        NavigationStack {
             LazyVGrid(
                 columns: [
                     GridItem(.adaptive(minimum: 90)),
                 ]) {
-                    ForEach(viewModel.cards, id: \.self) { card in
-                        CardView(card)
-                            .onTapGesture {
-                                viewModel.rotateCard(card)
-                            }
+                ForEach(viewModel.cards, id: \.self) { card in
+                    CardView(card)
+                        .onTapGesture {
+                        viewModel.rotateCard(card)
                     }
                 }
+            }
+                .padding(.horizontal)
+                .toolbar {
+                ToolbarItem(id: "plus", placement: .primaryAction) {
+                    Button {
+                        viewModel.incrementCards()
+                    }
+                    label: {
+                        Image(systemName: "plus.circle")
+                    }
+                }
+                ToolbarItem(id: "minus", placement: .primaryAction) {
+                    Button {
+                        viewModel.decrementCards()
+                    }
+                    label: {
+                        Image(systemName: "minus.circle")
+                    }
+                }
+            }
         }
-            .padding(.horizontal)
+
     }
 }
 

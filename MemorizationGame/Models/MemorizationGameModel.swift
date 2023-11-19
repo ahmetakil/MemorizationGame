@@ -7,23 +7,108 @@
 
 import Foundation
 
-struct MemorizationGameModel<T> where T: Equatable{
+
+
+struct MemorizationGameModel<T> where T: Equatable {
     private(set) var cards: [Card]
 
-    init(cards: [Card]) {
-        self.cards = cards
+
+    init(pairOfCards: Int, _ builder: (Int) -> T) {
+
+
+        var cards: [Card] = []
+
+        for val in 0...pairOfCards {
+            let content = builder(val)
+            cards.append(
+                Card(
+                    content: content
+                )
+            )
+            cards.append(
+                Card(
+                    content: content
+                )
+            )
+        }
+        self.cards = cards.shuffled()
     }
 
-    mutating func rotateCard(_ card: Card) {
+    var faceUpCardIndices: Array<Int> {
+        cards.indices.filter { cards[$0].isFaceUp }
+    }
+
+    var faceUpCardIndex: Int? {
+
+        get {
+            cards.indices.filter { index in cards[index].isFaceUp }.first
+        }
+
+        set {
+            cards.indices.forEach { index in
+                cards[index].isFaceUp = (index == newValue)
+            }
+        }
+
+    }
+
+    mutating func chooseCard(_ card: Card) {
         print("Will rotate card: \(card)")
 
-        if let index = cards.firstIndex(where: {
+        if let targetIndex = cards.firstIndex(where: {
             $0 == card
         }) {
-            cards[index].isFaceUp.toggle()
-            print("Toggled card: \(cards[index])")
+
+            let targetCard = cards[targetIndex]
+
+            if targetCard.isMatched {
+                return
+            }
+
+
+            if targetCard.isFaceUp {
+                cards[targetIndex].isFaceUp = false
+                return
+            }
+
+
+
+
+            if faceUpCardIndices.count > 1 {
+
+                faceUpCardIndex = targetIndex
+
+            }
+
+            if let facingUpCardIndex = faceUpCardIndex {
+
+
+                if targetCard.content == cards[facingUpCardIndex].content {
+
+                    // Match!.
+                    cards[targetIndex].isMatched = true
+                    cards[facingUpCardIndex].isMatched = true
+
+                    cards[targetIndex].isFaceUp = false
+                    cards[facingUpCardIndex].isMatched = false
+
+                }
+
+
+            } else {
+
+                // Turn the 2 cards back down.
+                faceUpCardIndex = targetIndex
+
+            }
+
+            cards[targetIndex].isFaceUp = true
+
+
         }
     }
+
+
 
     struct Card: Equatable, Identifiable, Hashable {
         var content: T
