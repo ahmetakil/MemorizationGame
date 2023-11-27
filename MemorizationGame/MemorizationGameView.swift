@@ -17,10 +17,12 @@ struct MemorizationGameView: View {
                 columns: [
                     GridItem(.adaptive(minimum: 90)),
                 ]) {
-                ForEach(viewModel.cards, id: \.self) { card in
+                ForEach(viewModel.cards) { card in
                     CardView(card)
                         .onTapGesture {
-                        viewModel.rotateCard(card)
+                        withAnimation {
+                            viewModel.rotateCard(card)
+                        }
                     }
                 }
             }

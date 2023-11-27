@@ -9,7 +9,7 @@ import Foundation
 
 
 
-struct MemorizationGameModel<T> where T: Equatable {
+struct MemorizationGameModel<T> where T: Equatable, T: Hashable {
     private(set) var cards: [Card]
 
 
@@ -35,25 +35,11 @@ struct MemorizationGameModel<T> where T: Equatable {
     }
 
     var faceUpCardIndices: Array<Int> {
-        cards.indices.filter { cards[$0].isFaceUp }
+        cards.indices.filter { cards[$0].isFaceUp && !cards[$0].isMatched }
     }
 
-    var faceUpCardIndex: Int? {
-
-        get {
-            cards.indices.filter { index in cards[index].isFaceUp }.first
-        }
-
-        set {
-            cards.indices.forEach { index in
-                cards[index].isFaceUp = (index == newValue)
-            }
-        }
-
-    }
 
     mutating func chooseCard(_ card: Card) {
-        print("Will rotate card: \(card)")
 
         if let targetIndex = cards.firstIndex(where: {
             $0 == card
@@ -61,56 +47,44 @@ struct MemorizationGameModel<T> where T: Equatable {
 
             let targetCard = cards[targetIndex]
 
-            if targetCard.isMatched {
+            if targetCard.isMatched || targetCard.isFaceUp {
                 return
             }
-
-
-            if targetCard.isFaceUp {
-                cards[targetIndex].isFaceUp = false
-                return
-            }
-
-
 
 
             if faceUpCardIndices.count > 1 {
 
-                faceUpCardIndex = targetIndex
-
+                cards.indices.forEach { index in cards[index].isFaceUp = false }
+                cards[targetIndex].isFaceUp = true
+                return
             }
 
-            if let facingUpCardIndex = faceUpCardIndex {
+            if faceUpCardIndices.count == 1 {
+                // Now we have 2.
 
+                if let existingFaceUpCardIndex = faceUpCardIndices.first {
 
-                if targetCard.content == cards[facingUpCardIndex].content {
+                    cards[targetIndex].isFaceUp = true
 
-                    // Match!.
-                    cards[targetIndex].isMatched = true
-                    cards[facingUpCardIndex].isMatched = true
+                    if cards[targetIndex].content == cards[existingFaceUpCardIndex].content && cards[targetIndex] != cards[existingFaceUpCardIndex] {
 
-                    cards[targetIndex].isFaceUp = false
-                    cards[facingUpCardIndex].isMatched = false
+                        cards[targetIndex].isMatched = true
+                        cards[existingFaceUpCardIndex].isMatched = true
+
+                    }
 
                 }
-
-
-            } else {
-
-                // Turn the 2 cards back down.
-                faceUpCardIndex = targetIndex
-
+                return
             }
 
+
             cards[targetIndex].isFaceUp = true
-
-
         }
     }
 
 
 
-    struct Card: Equatable, Identifiable, Hashable {
+    struct Card: Equatable, Identifiable {
         var content: T
         var isFaceUp: Bool
         var isMatched: Bool
@@ -127,8 +101,5 @@ struct MemorizationGameModel<T> where T: Equatable {
             lhs.id == rhs.id && lhs.content == rhs.content && lhs.isFaceUp == rhs.isFaceUp && lhs.isMatched == rhs.isMatched
         }
 
-        func hash(into hasher: inout Hasher) {
-            hasher.combine(id)
-        }
     }
 }
