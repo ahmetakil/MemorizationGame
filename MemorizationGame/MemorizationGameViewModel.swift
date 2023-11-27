@@ -70,7 +70,7 @@ class MemorizationGameViewModel: ObservableObject {
         restartGame()
     }
 
-    func decrementCards() {
+    func decreaseCards() {
         MemorizationGameViewModel.pairOfCards -= 1
         restartGame()
     }
