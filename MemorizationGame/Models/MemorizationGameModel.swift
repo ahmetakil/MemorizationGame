@@ -11,10 +11,9 @@ import Foundation
 
 struct MemorizationGameModel<T> where T: Equatable, T: Hashable {
     private(set) var cards: [Card]
-
+    private(set) var score: Int = 0
 
     init(pairOfCards: Int, _ builder: (Int) -> T) {
-
 
         var cards: [Card] = []
 
@@ -56,6 +55,7 @@ struct MemorizationGameModel<T> where T: Equatable, T: Hashable {
 
                 cards.indices.forEach { index in cards[index].isFaceUp = false }
                 cards[targetIndex].isFaceUp = true
+                score -= 1
                 return
             }
 
@@ -70,6 +70,7 @@ struct MemorizationGameModel<T> where T: Equatable, T: Hashable {
 
                         cards[targetIndex].isMatched = true
                         cards[existingFaceUpCardIndex].isMatched = true
+                        score += 3
 
                     }
 

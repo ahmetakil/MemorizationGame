@@ -8,20 +8,51 @@
 import Foundation
 
 typealias Card = MemorizationGameModel<String>.Card
+let initialPairOfCards = 4
+
+ 
 
 class MemorizationGameViewModel: ObservableObject {
 
-    @Published private var gameModel: MemorizationGameModel<String>
+    @Published private var gameModel: MemorizationGameModel<String> {
+        didSet {
+            let isGameCompleted = gameModel.cards.allSatisfy {
+                $0.isMatched
+            }
+            
+            if(isGameCompleted){
+                isGameOver = true
+                allTimeHigh = score
+            }
+        }
+    }
+    
+    var allTimeHigh: Int {
+        get {
+            UserDefaults.standard.integer(forKey: userDefaultsMaxScoreKey)
+        }
+        set {
+            
+            if newValue > allTimeHigh {
+                
+                UserDefaults.standard.setValue(newValue, forKey: userDefaultsMaxScoreKey)
+                reachedAllTimeHigh = true
+            }
+            
+        }
+    }
+    
+    var reachedAllTimeHigh: Bool = false
+    
 
-
-    static var _pairOfCards = 4
+    static var _pairOfCards = initialPairOfCards
     static var pairOfCards: Int {
         get {
             _pairOfCards
         }
         set {
 
-            if(newValue < 0 || newValue > MAX_CARD_COUNT) {
+            if(newValue < 0 || newValue >= MAX_CARD_COUNT) {
                 return
             }
 
@@ -50,19 +81,37 @@ class MemorizationGameViewModel: ObservableObject {
             String(shuffledList[index])
         }
     }
+    
+    var isGameOver: Bool = false
 
     var cards: Array<Card> {
         gameModel.cards
+        
+    }
+    
+    var movesCount: Int = 0
+    
+    var score: Int {
+        gameModel.score
     }
 
-    private func restartGame() {
+    // MARK: - Intents
+
+    
+    func restartGame(resetPairOfCardsCount: Bool? = nil) {
+        
+        if(resetPairOfCardsCount != nil){
+            MemorizationGameViewModel.pairOfCards = initialPairOfCards
+        }
+        
+        movesCount = 0
         gameModel = MemorizationGameViewModel.createGame()
     }
     
-    // MARK: - Intents
 
     func rotateCard(_ card: Card) {
         gameModel.chooseCard(card)
+        movesCount += 1
     }
 
     func incrementCards() {
@@ -79,3 +128,6 @@ class MemorizationGameViewModel: ObservableObject {
 
     
 }
+
+
+let userDefaultsMaxScoreKey = "userDefaultsMaxScoreKey"

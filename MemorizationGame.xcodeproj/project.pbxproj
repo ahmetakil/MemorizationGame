@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		2A11DF892B0A7A1C00CA5AA3 /* MemorizationGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF149EE2B00DA5B0011CDB3 /* MemorizationGameViewModel.swift */; };
 		2A11DF8B2B0A7AEE00CA5AA3 /* CongratsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A11DF8A2B0A7AEE00CA5AA3 /* CongratsView.swift */; };
+		2A2744792B177B150041E5B4 /* match.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2A2744782B177B150041E5B4 /* match.mp3 */; };
+		2A27447B2B177B1C0041E5B4 /* flip.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 2A27447A2B177B1C0041E5B4 /* flip.mp3 */; };
+		2A53AC502B14BEA80054EF9C /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A53AC4F2B14BEA80054EF9C /* GameView.swift */; };
 		2AF149BC2B00D8190011CDB3 /* MemorizationGameApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF149BB2B00D8190011CDB3 /* MemorizationGameApp.swift */; };
 		2AF149C02B00D81B0011CDB3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2AF149BF2B00D81B0011CDB3 /* Assets.xcassets */; };
 		2AF149C32B00D81B0011CDB3 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2AF149C22B00D81B0011CDB3 /* Preview Assets.xcassets */; };
@@ -37,6 +40,9 @@
 
 /* Begin PBXFileReference section */
 		2A11DF8A2B0A7AEE00CA5AA3 /* CongratsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CongratsView.swift; sourceTree = "<group>"; };
+		2A2744782B177B150041E5B4 /* match.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = match.mp3; sourceTree = "<group>"; };
+		2A27447A2B177B1C0041E5B4 /* flip.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = flip.mp3; sourceTree = "<group>"; };
+		2A53AC4F2B14BEA80054EF9C /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		2AF149B82B00D8190011CDB3 /* MemorizationGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MemorizationGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AF149BB2B00D8190011CDB3 /* MemorizationGameApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemorizationGameApp.swift; sourceTree = "<group>"; };
 		2AF149BF2B00D81B0011CDB3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -75,6 +81,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2A2744772B177B060041E5B4 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				2A27447A2B177B1C0041E5B4 /* flip.mp3 */,
+				2A2744782B177B150041E5B4 /* match.mp3 */,
+			);
+			path = Sounds;
+			sourceTree = "<group>";
+		};
 		2AF149AF2B00D8190011CDB3 = {
 			isa = PBXGroup;
 			children = (
@@ -97,12 +112,14 @@
 		2AF149BA2B00D8190011CDB3 /* MemorizationGame */ = {
 			isa = PBXGroup;
 			children = (
+				2A2744772B177B060041E5B4 /* Sounds */,
 				2AF149EB2B00D8B90011CDB3 /* Models */,
 				2AF149BB2B00D8190011CDB3 /* MemorizationGameApp.swift */,
 				2AF149EE2B00DA5B0011CDB3 /* MemorizationGameViewModel.swift */,
 				2A11DF8A2B0A7AEE00CA5AA3 /* CongratsView.swift */,
 				2AF149E52B00D85D0011CDB3 /* MemorizationGameView.swift */,
 				2AF149E92B00D88E0011CDB3 /* CardView.swift */,
+				2A53AC4F2B14BEA80054EF9C /* GameView.swift */,
 				2AF149BF2B00D81B0011CDB3 /* Assets.xcassets */,
 				2AF149C12B00D81B0011CDB3 /* Preview Content */,
 			);
@@ -238,6 +255,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				2AF149C32B00D81B0011CDB3 /* Preview Assets.xcassets in Resources */,
+				2A27447B2B177B1C0041E5B4 /* flip.mp3 in Resources */,
+				2A2744792B177B150041E5B4 /* match.mp3 in Resources */,
 				2AF149C02B00D81B0011CDB3 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -269,6 +288,7 @@
 				2AF149ED2B00D8D00011CDB3 /* MemorizationGameModel.swift in Sources */,
 				2AF149BC2B00D8190011CDB3 /* MemorizationGameApp.swift in Sources */,
 				2AF149EA2B00D88E0011CDB3 /* CardView.swift in Sources */,
+				2A53AC502B14BEA80054EF9C /* GameView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

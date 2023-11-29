@@ -8,50 +8,25 @@
 import SwiftUI
 
 struct MemorizationGameView: View {
+
     @ObservedObject var viewModel: MemorizationGameViewModel
     @State var showContextMenu = false
 
+
     var body: some View {
         NavigationStack {
-            LazyVGrid(
-                columns: [
-                    GridItem(.adaptive(minimum: 90)),
-                ]) {
-                ForEach(viewModel.cards) { card in
-                    CardView(card)
-                        .onTapGesture {
-                        withAnimation {
-                            viewModel.rotateCard(card)
-                        }
-                    }
+            GameView(viewModel: viewModel)
+                .navigationDestination(isPresented: $viewModel.isGameOver) {
+                    CongratsView(viewModel: viewModel)
                 }
-            }
-                .padding(.horizontal)
-                .toolbar {
-                ToolbarItem(id: "plus", placement: .primaryAction) {
-                    Button {
-                        viewModel.incrementCards()
-                    }
-                    label: {
-                        Image(systemName: "plus.circle")
-                    }
-                }
-                ToolbarItem(id: "minus", placement: .primaryAction) {
-                    Button {
-                        viewModel.decrementCards()
-                    }
-                    label: {
-                        Image(systemName: "minus.circle")
-                    }
-                }
-            }
         }
-
+    
     }
 }
 
+
+
+
 #Preview {
-    MemorizationGameView(
-        viewModel: MemorizationGameViewModel()
-    )
+    MemorizationGameView(viewModel: MemorizationGameViewModel())
 }
